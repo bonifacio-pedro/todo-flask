@@ -2,38 +2,56 @@
 <html lang="pt-BR">
 <head>
     <title>To-do Flask</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
 </head>
 <body>
-    <form method="post">
-        <input type="text" name="item">
-        <button type="submit">Enviar</button>
-    </form>
-    <table>
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Quando</th>
-                <th>Terminado?</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in itens %}
-                {% if i.done == False %}
+    <div class="form">
+        <form method="post">
+            <input required type="text" name="item" placeholder="Tarefa">
+            <button type="submit">Adicionar</button>
+        </form>
+    </div>
+    <div class="tabela">
+        <table>
+            <thead>
                 <tr>
-                    <td>{{i.item}}</td>
-                    <td>{{i.when.date()}}</td>
-                    <td><a href="/home/update/{{i.id}}">✅</a></td>
-                    <td><a href="/home/delete/{{i.id}}">🗑</a></td>
+                    <th>Item</th>
+                    <th>Quando</th>
+                    <th>Terminado?</th>
+                    <th></th>
                 </tr>
+            </thead>
+            <tbody>
+                {% for i in itens %}
+                    {% if i.done == False %}
+                    <tr>
+                        <td>{{i.item}}</td>
+                        <td>{{i.when.date()}}</td>
+                        <td><a href="/home/update/{{i.id}}">✅</a></td>
+                        <td><a href="/home/delete/{{i.id}}">❌</a></td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <th>Items finalizados</th>
+                <th></th>
+            </thead>
+            <tbody>
+            {% for i in itens %}
+                {% if i.done == True %}
+                    <tr>
+                        <td><s>{{i.item}}</s></td>
+                        <td><a href="/home/delete/{{i.id}}">❌</a></td>
+                    </tr>
                 {% endif %}
             {% endfor %}
-        </tbody>
-    </table>
-    <h3>Itens completos: </h3>
-    {% for i in itens %}
-        {% if i.done == True %}
-            <p><s>{{i.item}}</s><a href="/home/delete/{{i.id}}">🗑</a></p>
-        {% endif %}
-    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+   
 </body>
 </html>
