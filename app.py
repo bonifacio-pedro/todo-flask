@@ -19,6 +19,9 @@ def index():
 
 @app.route('/home')
 def home():
+    """
+    Fazendo uma busca por todos os itens na lista
+    """
     itens = session.query(List).all()
     return render_template('index.html', itens=itens)
 
@@ -32,8 +35,8 @@ def add():
 
 @app.route('/home/update/<id>')
 def uptade(id):
-    item = session.query(List).filter(List.id == id).one()
-    item.done = True
+    item = session.query(List).filter(List.id == id).one() # Buscando apenas um item
+    item.done = True # Mudando para feito
     session.add(item)
     session.commit()
     return redirect(url_for('home'))
@@ -41,7 +44,7 @@ def uptade(id):
 @app.route('/home/delete/<id>')
 def delete(id):
     item = session.query(List).filter(List.id == id).one()
-    session.delete(item)
+    session.delete(item) # Deletando
     session.commit
     return redirect(url_for('home'))
 
