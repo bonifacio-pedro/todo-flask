@@ -12,20 +12,38 @@ session = Session()
 
 @app.route('/')
 def index():
-    
+    """
+    Apenas redirecionando o cliente a home
+    """
     return redirect(url_for('home'))
 
 @app.route('/home')
 def home():
-    return render_template('index.html')
+    itens = session.query(List).all()
+    return render_template('index.html', itens=itens)
 
 @app.route('/home', methods=['POST'])
 def add():
     if request.method == 'POST':
-        item = List(item=request.form['item'],when=datetime.utcnow(),done=False)
-        session.add(item)
-        session.commit()
-        return redirect(url_for('home'))
+        item = List(item=request.form['item'],when=datetime.utcnow(),done=False) # Criando um item, com ORM.
+        session.add(item) # Adicionando
+        session.commit() # Atualizando
+        return redirect(url_for('home')) # Redirecionando a nova home
+
+@app.route('/home/update/<id>')
+def uptade(id):
+    item = session.query(List).filter(List.id == id).one()
+    item.done = True
+    session.add(item)
+    session.commit()
+    return redirect(url_for('home'))
+
+@app.route('/home/delete/<id>')
+def delete(id):
+    item = session.query(List).filter(List.id == id).one()
+    session.delete(item)
+    session.commit
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run()

@@ -8,7 +8,32 @@
         <input type="text" name="item">
         <button type="submit">Enviar</button>
     </form>
-
-
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quando</th>
+                <th>Terminado?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in itens %}
+                {% if i.done == False %}
+                <tr>
+                    <td>{{i.item}}</td>
+                    <td>{{i.when.date()}}</td>
+                    <td><a href="/home/update/{{i.id}}">✅</a></td>
+                    <td><a href="/home/delete/{{i.id}}">🗑</a></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Itens completos: </h3>
+    {% for i in itens %}
+        {% if i.done == True %}
+            <p><s>{{i.item}}</s><a href="/home/delete/{{i.id}}">🗑</a></p>
+        {% endif %}
+    {% endfor %}
 </body>
 </html>
