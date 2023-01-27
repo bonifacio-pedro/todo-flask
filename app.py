@@ -6,7 +6,7 @@ from datetime import datetime
 from db import List
 
 app = Flask(__name__)
-engine = create_engine('mysql+mysqldb://root:45093988rgftqj@localhost/todoflask', pool_recycle=3600)
+engine = create_engine('mysql+mysqldb://root:##############@localhost/todoflask', pool_recycle=3600)
 Session = sessionmaker(bind=engine)
 session = Session()
 
